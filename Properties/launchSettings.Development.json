@@ -1,0 +1,39 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Redis__ConnectionString": "host.docker.internal:6379",
+        "Storage__Provider": "DynamoDB",
+        "AWS__Region": "us-east-1",
+        "DynamoDB__TableName": "UrlResumeUrls"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5164"
+    },
+    "https": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Redis__ConnectionString": "host.docker.internal:6379",
+        "Storage__Provider": "DynamoDB",
+        "AWS__Region": "us-east-1",
+        "DynamoDB__TableName": "UrlResumeUrls"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7192;http://localhost:5164"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTP_PORTS": "8080"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
+}

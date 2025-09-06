@@ -1,0 +1,28 @@
+services:
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    restart: always
+
+  urlresume:
+    build:
+      context: .
+    image: urlresume:prod
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Production
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - DynamoDB__TableName=${DYNAMO_TABLE_NAME:-UrlResumeUrls}
+      - Redis__ConnectionString=redis:6379
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    restart: always
+
+volumes:
+  redisdata:
