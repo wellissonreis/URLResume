@@ -10,16 +10,18 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["URLResume.csproj", "."]
-RUN dotnet restore "./URLResume.csproj"
+# Copia apenas o csproj para melhor cache do restore
+COPY ["src/URLResume.csproj", "src/"]
+RUN dotnet restore "src/URLResume.csproj"
+# Agora copia o restante do código
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./URLResume.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/src"
+RUN dotnet build "URLResume.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./URLResume.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "URLResume.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
