@@ -18,7 +18,6 @@ var storageProvider = builder.Configuration["Storage:Provider"] ?? (builder.Envi
 // AWS DynamoDB (registrado somente quando provider = DynamoDB)
 if (string.Equals(storageProvider, "DynamoDB", StringComparison.OrdinalIgnoreCase))
 {
-    // Usa o pacote AWSSDK.Extensions.NETCore.Setup para ler AWS Options de configuração (Profile, Region, etc.)
     builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
     builder.Services.AddAWSService<IAmazonDynamoDB>();
 }
@@ -31,7 +30,6 @@ if (!redisConn.Contains("abortConnect", StringComparison.OrdinalIgnoreCase))
 }
 builder.Services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(redisConn));
 
-// DI: Repositório (DynamoDB ou Memória) + Decorator de Cache (Redis) e serviço de encurtamento
 builder.Services.AddSingleton<IUrlRepositorio>(sp =>
 {
     IUrlRepositorio inner;
@@ -65,7 +63,6 @@ if (app.Environment.IsProduction())
     app.UseHttpsRedirection();
 }
 
-// Endpoint de saúde
 app.MapGet("/", () => Results.Ok(new { status = "ok" }))
    .WithOpenApi(op =>
    {

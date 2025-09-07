@@ -21,8 +21,5 @@ public class UrlRegistro
         Acessos = acessos;
     }
 
-    public void RegistrarAcesso()
-    {
-        Acessos++;
-    }
+    public void RegistrarAcesso() => Acessos++;
 }

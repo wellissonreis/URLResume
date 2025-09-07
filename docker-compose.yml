@@ -24,7 +24,6 @@ services:
       - Redis__ConnectionString=redis:6379
       - Storage__Provider=DynamoDB
       - AWS__Region=${AWS__Region:-us-east-1}
-      # AWS/DynamoDB (pass via .env)
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
